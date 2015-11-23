@@ -21,10 +21,14 @@
       ],
       "matches": [
         "*://*/*"
-      ],
-      "run_at": "document_start"
+      ]
     }
   ],
+  "web_accessible_resources": ["css/modal.css"],
+
+  "externally_connectable": {
+    "matches": ["*://*.example.com/*"]
+  },
 
   "background":{
     "scripts":[

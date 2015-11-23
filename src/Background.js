@@ -31,10 +31,10 @@ var MetadataHandler = function() {
 var metadataHandler = new MetadataHandler();
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    if (request.method == "getStatus") {
+    if (request.method == "LockStatus") {
         var locked = metadataHandler.testURL(sender.url);
         sendResponse({
-            method: "getStatus",
+            method: "LockStatus",
             locked: locked
         });
     }
