@@ -1,13 +1,9 @@
 var ContentHandler = function() {
-    var storedBody = "";
-    var storedHead = "";
     var self = this;
 
     this.authorize = function(locked) {
-        if (locked) {
-            storedBody = document.body;
-            storedHead = document.head;
-            document.body.remove();
+        if (!isAuthorisedDomain() && locked) {
+            window.stop();
             displayModal();
         }
     }
@@ -17,6 +13,10 @@ var ContentHandler = function() {
         console.log('Entered Password ' + document.getElementById('secret').value);
         onSuccess();
         return false;
+    }
+
+    var isAuthorisedDomain = function() {
+        return location.hostname == sessionStorage.getItem('lastDomain');
     }
 
     var displayModal = function() {
@@ -39,7 +39,8 @@ var ContentHandler = function() {
     }
 
     var onSuccess = function() {
-        document.body = storedBody;
+        sessionStorage.setItem('lastDomain', location.hostname);
+        location.reload();
     }
 }
 

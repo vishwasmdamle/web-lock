@@ -26,4 +26,6 @@
     box-shadow: #CCCCCC 0px 0px 10px 1px;
     border-radius: 4px;
     height: 30px;
+    padding-left: 10px;
+    font-size: 25px;
 }
