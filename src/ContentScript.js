@@ -21,8 +21,20 @@ var ContentHandler = function() {
 
     var validateCredentials = function(password) {
         var hash = generateHash(password);
-        console.log(hash);
-        onSuccess();
+
+        chrome.runtime.sendMessage({
+                method: "Authenticate",
+                hash: hash
+            },
+            function(response) {
+                if (response.authenticated) {
+                    onSuccess();
+                } else {
+                    onFailure();
+                }
+            }
+        );
+
         return true;
     }
 
@@ -49,6 +61,18 @@ var ContentHandler = function() {
         sessionStorage.setItem('lastDomain', location.hostname);
         document.getElementById('modal-div').style.backgroundColor = '#008800';
         location.reload();
+    }
+
+    var onFailure = function() {
+        var bgColor = document.getElementById('modal-div').style.backgroundColor;
+        document.getElementById('secret').value = "";
+        document.getElementById('modal-div').style.backgroundColor = '#AA2200';
+        setTimeout(
+            function(){
+                document.getElementById('modal-div').style.backgroundColor = bgColor;
+            },
+            1000
+        );
     }
 }
 

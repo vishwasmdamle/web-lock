@@ -1,6 +1,8 @@
 var MetadataHandler = function() {
     var self = this;
 
+    var storedHash = generateHash("aPassword");
+
     this.urls = [
         {
             name: "Gmail",
@@ -15,6 +17,11 @@ var MetadataHandler = function() {
     this.testURL = function(url) {
         regex = generateRegex();
         return regex.test(url);
+    }
+
+
+    this.validate = function(hash) {
+        return hash == storedHash;
     }
 
     var generateRegex = function() {
@@ -36,6 +43,14 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         sendResponse({
             method: "LockStatus",
             locked: locked
+        });
+    }
+
+    if (request.method == "Authenticate") {
+        var authenticated = metadataHandler.validate(request.hash);
+        sendResponse({
+            method: "Authenticate",
+            authenticated: authenticated
         });
     }
 });
