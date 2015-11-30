@@ -10,13 +10,20 @@ var ContentHandler = function() {
 
     this.onAuthenticationFinished = function(event) {
         event.preventDefault();
-        console.log('Entered Password ' + document.getElementById('secret').value);
-        onSuccess();
+        var password = document.getElementById('secret').value;
+        validateCredentials(password);
         return false;
     }
 
     var isAuthorisedDomain = function() {
         return location.hostname == sessionStorage.getItem('lastDomain');
+    }
+
+    var validateCredentials = function(password) {
+        var hash = generateHash(password);
+        console.log(hash);
+        onSuccess();
+        return true;
     }
 
     var displayModal = function() {
@@ -30,7 +37,7 @@ var ContentHandler = function() {
             + "<p>This URL needs authentication!</p>"
             + "<hr>"
             + "<form id='pass-form' method='post'>"
-                + "<div id='password-div'><label>Enter Password : </label><input type='password' id='secret' name='secret'/></div>"
+                + "<div id='password-div'><label>Enter Password : </label><input type='password' id='secret' name='secret' autofocus/></div>"
             + "</form>"
         + "</div>";
 
@@ -40,6 +47,7 @@ var ContentHandler = function() {
 
     var onSuccess = function() {
         sessionStorage.setItem('lastDomain', location.hostname);
+        document.getElementById('modal-div').style.backgroundColor = '#008800';
         location.reload();
     }
 }
